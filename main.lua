@@ -17,6 +17,9 @@ local apples = {}
 
 local bg = require "background"
 
+require "FruitSpawner"
+local fruitSpawner = nil
+
 g_Width = love.graphics.getWidth()
 g_Height = love.graphics.getHeight()
 
@@ -99,6 +102,8 @@ function love.load()
 
   apple1 = Apple.new(100, 400, world);
   apples[1] = apple1;
+
+  fruitSpawner = FruitSpawner.new(Apple, 10, 350, world)
 end
 
 function love.update(dt)
@@ -142,6 +147,7 @@ function love.update(dt)
   end
   bg.update(dt)
   crateSpawner.update()
+  fruitSpawner.update()
   if (player.body:getX() < 0) then
     alive = false
   end
@@ -161,13 +167,7 @@ function love.draw()
   bg.draw()
 
   --apple1.draw()
-  for i = 1, #apples do
-    if apples[i].isDestroyed() then
-
-    else
-      apples[i]:draw()
-    end
-  end
+  fruitSpawner.draw()
 
   local x1, y1 = player.body:getWorldPoints(player.shape:getPoints())
 
